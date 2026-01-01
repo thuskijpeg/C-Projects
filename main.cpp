@@ -1,76 +1,51 @@
 #include <iostream>
+#include <iomanip>
 
 using namespace std;
 
-
-
-void inputData(int *pValues, int *pCounter)
+struct Order
 {
-    for (int k = 0; k < *pCounter; k++)
-    {
-        cout << "Enter Value: ";
-        cin >> *(pValues + k);
-    }
+    string item;
+    int price;
+    int numOfItems;
+};
 
-}
-
-void displayData(int *pValues, int *pCounter)
+void displayOrders(Order arrOrder[], int totalPrice, int counter)
 {
-    cout << "Content of the array" << endl;
+    cout << "====ORDERS=====" << endl;
+    cout <<left << setw(5) << "Item" << "    |   " << right << setw(5) << "Price" << endl;
 
-    for (int k = 0; k < *pCounter; k++)
+    for (int i = 0; i < counter; i++)
     {
-        cout << *(pValues + k) << " ";
-    }
-}
 
-
-int findValue(int *pValues, int *pCounter, int *pValue)
-{
-    int count = 0;
-    int *pCount = &count;
-
-    for (int i = 0; i < *pCounter; i++)
-    {
-        if (*(pValues + i) == *pValue)
-        {
-            (*pCount)++;
-        }
 
     }
-
-    return *pCount;
 
 }
 
 int main()
 {
-    int values[10];
-    int *pValues = values;
+    const int MAX = 10;
+    Order arrOrder[MAX];
+    int counter = 0;
+    int totalPrice = 0;
 
-    int counter = 10;
-    int *pCounter = &counter;
+    do
+    {
+        cout << "Enter the name of the item: ";
+        cin >> arrOrder[counter].item;
+        cout << "Enter the price of item: ";
+        cin >> arrOrder[counter].price;
+        cout << "Enter the number of item ordered: ";
+        cin >> arrOrder[counter].numOfItems;
 
-    int value;
-    int *pValue = &value;
+        totalPrice +=  arrOrder[counter].price;
 
-    int times;
-    int *pTimes = &times;
 
-    inputData(values, &counter);
-    displayData(values, &counter);
+    }while(arrOrder[counter].item != "X" && counter < MAX);
 
-    cout << endl;
+    displayOrders(arrOrder, totalPrice, counter)
 
-    cout << "Enter a value: ";
-    cin >> *pValue;
-
-    cout << endl;
-
-    *pTimes = findValue(values, &counter, &value);
-
-    cout << "The value of " << *pValue << " occurs " << *pTimes << " in the array." << endl;
 
     return 0;
-
 }
