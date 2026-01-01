@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1757947155 source:c:\users\thusa\onedrive\desktop\structs test 2 practice\main.cpp
+	<iostream>
+	<iomanip>
+	<cctype>
+	<string>
+	<limits>
+
