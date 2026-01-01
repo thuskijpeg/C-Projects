@@ -1,0 +1,5 @@
+Jack Mark;A0345T;75 82 90 88 95
+Joe Molefe;B0322K;85 76 92 78 89
+Sarah Dlamini;C0289F;68 74 81 77 70
+Peter Nkosi;D0156L;45 50 48 52 47
+Lerato Mokoena;E0378P;90 88 94 92 91

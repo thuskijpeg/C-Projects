@@ -4,212 +4,166 @@
 #include <iomanip>
 using namespace std;
 
-// Declare the struct
-struct TruckInfo {
-    string driverName;
-    string truckNumber;
-    int distanceCovered;
-    int fuelConsumed;
+const int NUM_TESTS = 5;
+
+struct Student {
+    string studentName;
+    string studentID;
+    int testResults[5];
 };
 
 // Function prototypes
-int loadTruckInfo(TruckInfo trucks[], int maxTrucks);
-void viewTruckInfo(TruckInfo trucks[], int numTrucks);
-void swapTruckInfo(TruckInfo trucks[], int numTrucks);
-void editTruckInfo(TruckInfo trucks[], int numTrucks);
-void saveTruckInfo(TruckInfo trucks[], int numTrucks);
+int loadStudentInfo(Student students[], int maxStudents);
+double calculateAverage(Student s);
+void viewStudentInfo(Student students[], int numStudents);
+void deleteStudentInfo(Student students[], int &numStudents);
+void editStudentInfo(Student students[], int numStudents);
+void savePass(Student students[], int numStudents);
 
 int main() {
-    const int MAX_TRUCKS = 20;
-    TruckInfo trucks[MAX_TRUCKS];
-    int numTrucks = 0;
+    const int MAX = 20;
+    Student students[MAX];
+    int numStudents = 0;
     int choice;
 
-    // --- Load truck information from file ---
-    numTrucks = loadTruckInfo(trucks, MAX_TRUCKS);
+    // Step 1: Load data from file
+    // Uncomment after writing loadStudentInfo()
+    numStudents = loadStudentInfo(students, MAX);
 
     do {
-        cout << "\n===== Truck Fuel Usage Rating System =====" << endl;
-        cout << "1. View Truck Info" << endl;
-        cout << "2. Swap Truck Info" << endl;
-        cout << "3. Edit Truck Info" << endl;
-        cout << "4. Save Excellent Rating Info" << endl;
-        cout << "5. Exit" << endl;
+        cout << "\n=== Student Academic Performance Tracker ===\n";
+        cout << "1. View Student Info\n";
+        cout << "2. Delete Student Info\n";
+        cout << "3. Edit Student Info\n";
+        cout << "4. Save Students Who Passed\n";
+        cout << "5. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
 
         switch (choice) {
-            case 1:
-                viewTruckInfo(trucks, numTrucks);
-                break;
-            case 2:
-                swapTruckInfo(trucks, numTrucks);
-                break;
-            case 3:
-                editTruckInfo(trucks, numTrucks);
-                break;
-            case 4:
-                saveTruckInfo(trucks, numTrucks);
-                break;
-            case 5:
-                cout << "Exiting program..." << endl;
-                break;
-            default:
-                cout << "Invalid choice. Try again." << endl;
+        case 1:
+            viewStudentInfo(students, numStudents);
+            break;
+        case 2:
+            //deleteStudentInfo(students, numStudents);
+            break;
+        case 3:
+            //editStudentInfo(students, numStudents);
+            break;
+        case 4:
+            //savePass(students, numStudents);
+            break;
+        case 5:
+            cout << "Exiting program...\n";
+            break;
+        default:
+            cout << "Invalid choice. Try again.\n";
         }
     } while (choice != 5);
 
     return 0;
 }
 
-
-int loadTruckInfo(TruckInfo trucks[], int maxTrucks)
+int loadStudentInfo(Student students[], int maxStudents)
 {
-    ifstream inFile("truckInfo.txt", ios::in);
+    ifstream inFile("studentInfo.txt", ios::in);
 
     if (inFile.fail())
     {
         cerr << "There was an error opening the file" << endl;
     }
 
+    const int SIZE = 10;
+
+    string marks[SIZE];
     int counter = 0;
-    string distance;
-    string fuel;
 
-    while (getline(inFile, trucks[counter].driverName, ';'))
+    while (getline(inFile, students[counter].studentName, ';'))
     {
-        getline(inFile, trucks[counter].truckNumber, ';');
-        getline(inFile, distance, ';');
-        getline(inFile, fuel);
+        getline(inFile, students[counter].studentID, ';');
 
-        trucks[counter].distanceCovered = stoi(distance);
-        trucks[counter].fuelConsumed = stoi(fuel);
+
+        for (int i = 0; i < NUM_TESTS; i++)
+        {
+            inFile >> students[counter].testResults[i];
+        }
 
         counter++;
     }
-
-    inFile.close();
 
     return counter;
 
 }
 
-
-void viewTruckInfo(TruckInfo trucks[], int numTrucks)
+double calculateAverage(Student s)
 {
-    cout << endl;
-    cout << "    Name of Driver    " << setw(15) << "    Track Number     " << setw(15) << "    Distance Covered    " << setw(14) << "    Fuel Consumed    " << setw(15) << "       Performance Rating   " << setw(15) << endl;
-    cout << "-----------------------------------------------------------------------------------------------------------------------" << endl;
+    double total;
+    double average;
 
-
-    string rating;
-
-
-
-    for (int i = 0; i < numTrucks; i++)
+    for (int i = 0; i < NUM_TESTS; i++)
     {
-        if (trucks[i].fuelConsumed <= 20)
-        {
-            rating = "Excellent Fuel Usuage";
-        }else{
-            rating = "Poor Fuel Usage";
-        }
-
-
-        cout << i + 1 << "        " << left << setw(15) << trucks[i].driverName << "       " << left << setw(15) << trucks[i].truckNumber << "       " << left << setw(15) << trucks[i].distanceCovered << "          " << left << setw(15) << trucks[i].fuelConsumed << "   " << left << setw(15) << rating << " " << endl;
-    }
-}
-
-void swapTruckInfo(TruckInfo trucks[], int numTrucks)
-{
-    TruckInfo temp;
-
-    int swapP1;
-    int swapP2;
-    int swap1;
-    int swap2;
-
-    cout << "Enter the number of the truck (first) to swap: ";
-    cin >> swapP1;
-
-    cout << "Enter the number of the truck (second) to swap: ";
-    cin >> swapP2;
-
-    swap1 = swapP1 - 1;
-    swap2 = swapP2 - 1;
-
-    temp = trucks[swap1];
-    trucks[swap1] = trucks[swap2];
-    trucks[swap2] = temp;
-
-    cout << "Trucks were swapped." << endl;
-
-}
-
-void editTruckInfo(TruckInfo trucks[], int numTrucks)
-{
-    int truckNum;
-
-
-    cout << "Enter the number of the truck information to edit: ";
-    cin >> truckNum;
-
-    int truckPos = truckNum - 1;
-
-    char answer1;
-    char answer2;
-    int distance;
-    int fuel;
-    string truckNumber;
-
-    cout << "Truck Number: ";
-    cin >> truckNumber;
-
-
-    if (truckNumber == trucks[truckPos].truckNumber)
-    {
-        cout << "Do you want to change the distance travelled (Y or N): ";
-        cin >> answer1;
-
-        if (answer1 == 'y' || answer1 == 'Y')
-        {
-            cout << "Enter the new distance travelled: ";
-            cin >> distance;
-
-            trucks[truckPos].distanceCovered = distance;
-        }
-
-        cout << "Do you want to change the quantity of the fuel used (Y or N): ";
-        cin >> answer2;
-
-        if (answer2 == 'y' || answer2 == 'Y')
-        {
-            cout << "Enter the new quantity of fuel used: ";
-            cin >> fuel;
-
-            trucks[truckPos].fuelConsumed = fuel;
-        }
-    }else{
-
-        cout << "Invalid truck number." << endl;
-    }
-}
-
-void saveTruckInfo(TruckInfo trucks[], int numTrucks)
-{
-    ofstream outFile("ExellentRating.txt", ios :: out);
-
-    for (int i = 0; i < numTrucks; i++)
-    {
-        if (trucks[i].fuelConsumed <= 20 && trucks[i].distanceCovered >= 100)
-        {
-            outFile << trucks[i].driverName << "#" << trucks[i].truckNumber << endl;
-        }
+        total += s.testResults[i];
     }
 
-    outFile.close();
+    average = total / NUM_TESTS;
 
-    cout << "Information susccesfully saved to the file: " << endl;
+    return average;
+}
+
+void viewStudentInfo(Student students[], int numStudents)
+{
+    cout << left << setw(5) << "No." << "  " << setw(10) << "Name" << "          " << setw(12) << "Test Scores" << "    " << right << setw(10) << "Average" << endl;
+    cout << "-----------------------------------------------------" << endl;
+    string results;
+    int counter = 0;
+    int mark1;
+    int mark2;
+    int mark3;
+    int mark4;
+    int mark5;
+    string mark1Str;
+    string mark2Str;
+    string mark3Str;
+    string mark4Str;
+    string mark5Str;
+    double average;
+
+
+    for (int i = 0; i < numStudents; i++)
+    {
+        average = calculateAverage(students[i]);
+
+        while(counter < NUM_TESTS)
+        {
+            mark1 = students[i].testResults[counter];
+            counter++;
+
+            mark2 = students[i].testResults[counter];
+            counter++;
+
+            mark3 = students[i].testResults[counter];
+            counter++;
+
+            mark4 = students[i].testResults[counter];
+            counter++;
+
+            mark5 = students[i].testResults[counter];
+            counter++;
+
+
+        }
+
+        mark1Str = to_string(mark1);
+        mark2Str = to_string(mark2);
+        mark3Str = to_string(mark3);
+        mark4Str = to_string(mark4);
+        mark5Str = to_string(mark5);
+
+        results = mark1Str + " " + mark2Str + " " + mark3Str + " " + mark4Str + " " + mark5Str;
+
+        cout << left << setw(5) << i + 1 << "  " << setw(10) << students[i].studentName << "          " << setw(12) << results << "    " << right << setw(10) << average << endl;
+
+    }
 
 }
 
