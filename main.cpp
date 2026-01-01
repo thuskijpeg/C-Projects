@@ -3,49 +3,45 @@
 
 using namespace std;
 
-struct Order
-{
-    string item;
-    int price;
-    int numOfItems;
-};
-
-void displayOrders(Order arrOrder[], int totalPrice, int counter)
-{
-    cout << "====ORDERS=====" << endl;
-    cout <<left << setw(5) << "Item" << "    |   " << right << setw(5) << "Price" << endl;
-
-    for (int i = 0; i < counter; i++)
-    {
-
-
-    }
-
-}
-
 int main()
 {
-    const int MAX = 10;
-    Order arrOrder[MAX];
-    int counter = 0;
-    int totalPrice = 0;
+    string name;
+    string *pName = &name;
 
-    do
-    {
-        cout << "Enter the name of the item: ";
-        cin >> arrOrder[counter].item;
-        cout << "Enter the price of item: ";
-        cin >> arrOrder[counter].price;
-        cout << "Enter the number of item ordered: ";
-        cin >> arrOrder[counter].numOfItems;
+    int daysLate;
+    int *pDaysLate = &daysLate;
 
-        totalPrice +=  arrOrder[counter].price;
+    int numOfBooks;
+    int *pNumOfBooks = &numOfBooks;
+
+    int fine;
+    int *pFine = &fine;
+
+    double total;
+    double *pTotal = &total;
+
+    cout << "Name of student: ";
+    cin >> *pName;
+
+    cout << "Enter the number of days late: ";
+    cin >> *pDaysLate;
+
+    cout << "Enter the number of books: ";
+    cin >> *pNumOfBooks;
+
+    cout << "Enter the fine per book per day: R";
+    cin >> *pFine;
+
+    *pTotal = *pNumOfBooks * *pDaysLate * *pFine;
+
+    cout << endl;
+
+    cout << "Name of student: " << *pName << endl;
+    cout << "Number of days late: " << *pDaysLate << endl;
+    cout << "Number of books outstanding: " << *pNumOfBooks << endl;
+    cout << "Fine per book per day: " << *pFine << endl;
+    cout << "Amount due: R" << fixed << setprecision(2) << *pTotal << endl;
 
 
-    }while(arrOrder[counter].item != "X" && counter < MAX);
 
-    displayOrders(arrOrder, totalPrice, counter)
-
-
-    return 0;
 }
