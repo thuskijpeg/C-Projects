@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1762761991 source:c:\users\thusa\onedrive\desktop\2023 exam paper question2\main.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<iomanip>
+

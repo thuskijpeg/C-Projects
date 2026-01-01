@@ -1,113 +1,217 @@
 #include <iostream>
-#include <random>
+#include <fstream>
 #include <string>
-
+#include <iomanip>
 using namespace std;
 
-int main()
-{
-    int idNum;
+// Declare the struct
+struct TruckInfo {
+    string driverName;
+    string truckNumber;
+    int distanceCovered;
+    int fuelConsumed;
+};
 
-    cout << "Please enter your staff identifcation number for equipment thermal insulation check: ";
-    cin >> idNum;
+// Function prototypes
+int loadTruckInfo(TruckInfo trucks[], int maxTrucks);
+void viewTruckInfo(TruckInfo trucks[], int numTrucks);
+void swapTruckInfo(TruckInfo trucks[], int numTrucks);
+void editTruckInfo(TruckInfo trucks[], int numTrucks);
+void saveTruckInfo(TruckInfo trucks[], int numTrucks);
 
-    if (!(idNum >= 10000 && idNum <= 99999))
-    {
-        cout << "The staff identifcation number is incorrect" << endl;
-        cout << "Exiting program....." << endl;
-        return 1;
+int main() {
+    const int MAX_TRUCKS = 20;
+    TruckInfo trucks[MAX_TRUCKS];
+    int numTrucks = 0;
+    int choice;
 
-    }else{
-        cout << endl;
-        cout << "The staff identification number is correct." << endl;
-        cout << "Welcome to the Thermal Insulation System!" << endl;
-    }
+    // --- Load truck information from file ---
+    numTrucks = loadTruckInfo(trucks, MAX_TRUCKS);
 
+    do {
+        cout << "\n===== Truck Fuel Usage Rating System =====" << endl;
+        cout << "1. View Truck Info" << endl;
+        cout << "2. Swap Truck Info" << endl;
+        cout << "3. Edit Truck Info" << endl;
+        cout << "4. Save Excellent Rating Info" << endl;
+        cout << "5. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
 
-    int items;
-    int temp;
-    string material;
-    string idNO;
-    string type;
-    int num1;
-    int num2;
-    int num3;
-    string num1Str;
-    string num2Str;
-    string num3Str;
-
-    cout << endl;
-    cout << "Please indicate the total number of items to check: ";
-    cin >> items;
-    cout << endl;
-
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<int> dist(1, 10);
-
-    for (int i = 0; i < items; i++)
-    {
-
-        cout << "Enter the temperature (degrees centigrade) of item " << i + 1 << ": ";
-        cin >> temp;
-
-        cout << endl;
-
-        if (temp <= 90){
-            type = "Y";
-            material = "Cotton, silk, or paper";
-
-
-        }else if (temp > 90 && temp <= 105){
-            type = "A";
-            material = "Cotton, silk, or paper with impregnated insulation oil";
-
-
-        }else if (temp > 105 && temp <= 120){
-            type = "E";
-            material = "Combination of different materials";
-
-
-        }else if (temp > 120 && temp <= 130){
-            type = "B";
-            material = "Inorganic material with adhesives";
-
-
-        }else if (temp > 130 && temp <= 155){
-            type = "F";
-            material = "Inorganic material with adhesives";
-
-
-        }else if (temp > 155 && temp <= 180){
-            type = "H";
-            material = "Inorganic material glued with silicon resin";
-
-
-        }else if (temp > 180){
-            type = "C";
-            material = "100% inorganic material";
-
+        switch (choice) {
+            case 1:
+                viewTruckInfo(trucks, numTrucks);
+                break;
+            case 2:
+                swapTruckInfo(trucks, numTrucks);
+                break;
+            case 3:
+                editTruckInfo(trucks, numTrucks);
+                break;
+            case 4:
+                saveTruckInfo(trucks, numTrucks);
+                break;
+            case 5:
+                cout << "Exiting program..." << endl;
+                break;
+            default:
+                cout << "Invalid choice. Try again." << endl;
         }
-
-        num1 = dist(gen);
-        num2 = dist(gen);
-        num3 = dist(gen);
-
-        num1Str = to_string(num1);
-        num2Str = to_string(num2);
-        num3Str = to_string(num3);
-
-        idNO = type + num1Str + num2Str + num3Str;
-
-        cout << "=====================================================================" << endl;
-        cout << "Identification number: " << idNO << endl;
-        cout << "For a temperatire value of " << temp << " degree centigrade, the insulation class is " << type << endl;
-        cout << "Material(s) to be used for insulation: " << material << endl;
-        cout << "=====================================================================" << endl;
-        cout << endl;
-
-    }
-
+    } while (choice != 5);
 
     return 0;
 }
+
+
+int loadTruckInfo(TruckInfo trucks[], int maxTrucks)
+{
+    ifstream inFile("truckInfo.txt", ios::in);
+
+    if (inFile.fail())
+    {
+        cerr << "There was an error opening the file" << endl;
+    }
+
+    int counter = 0;
+    string distance;
+    string fuel;
+
+    while (getline(inFile, trucks[counter].driverName, ';'))
+    {
+        getline(inFile, trucks[counter].truckNumber, ';');
+        getline(inFile, distance, ';');
+        getline(inFile, fuel);
+
+        trucks[counter].distanceCovered = stoi(distance);
+        trucks[counter].fuelConsumed = stoi(fuel);
+
+        counter++;
+    }
+
+    inFile.close();
+
+    return counter;
+
+}
+
+
+void viewTruckInfo(TruckInfo trucks[], int numTrucks)
+{
+    cout << endl;
+    cout << "    Name of Driver    " << setw(15) << "    Track Number     " << setw(15) << "    Distance Covered    " << setw(14) << "    Fuel Consumed    " << setw(15) << "       Performance Rating   " << setw(15) << endl;
+    cout << "-----------------------------------------------------------------------------------------------------------------------" << endl;
+
+
+    string rating;
+
+
+
+    for (int i = 0; i < numTrucks; i++)
+    {
+        if (trucks[i].fuelConsumed <= 20)
+        {
+            rating = "Excellent Fuel Usuage";
+        }else{
+            rating = "Poor Fuel Usage";
+        }
+
+
+        cout << i + 1 << "        " << left << setw(15) << trucks[i].driverName << "       " << left << setw(15) << trucks[i].truckNumber << "       " << left << setw(15) << trucks[i].distanceCovered << "          " << left << setw(15) << trucks[i].fuelConsumed << "   " << left << setw(15) << rating << " " << endl;
+    }
+}
+
+void swapTruckInfo(TruckInfo trucks[], int numTrucks)
+{
+    TruckInfo temp;
+
+    int swapP1;
+    int swapP2;
+    int swap1;
+    int swap2;
+
+    cout << "Enter the number of the truck (first) to swap: ";
+    cin >> swapP1;
+
+    cout << "Enter the number of the truck (second) to swap: ";
+    cin >> swapP2;
+
+    swap1 = swapP1 - 1;
+    swap2 = swapP2 - 1;
+
+    temp = trucks[swap1];
+    trucks[swap1] = trucks[swap2];
+    trucks[swap2] = temp;
+
+    cout << "Trucks were swapped." << endl;
+
+}
+
+void editTruckInfo(TruckInfo trucks[], int numTrucks)
+{
+    int truckNum;
+
+
+    cout << "Enter the number of the truck information to edit: ";
+    cin >> truckNum;
+
+    int truckPos = truckNum - 1;
+
+    char answer1;
+    char answer2;
+    int distance;
+    int fuel;
+    string truckNumber;
+
+    cout << "Truck Number: ";
+    cin >> truckNumber;
+
+
+    if (truckNumber == trucks[truckPos].truckNumber)
+    {
+        cout << "Do you want to change the distance travelled (Y or N): ";
+        cin >> answer1;
+
+        if (answer1 == 'y' || answer1 == 'Y')
+        {
+            cout << "Enter the new distance travelled: ";
+            cin >> distance;
+
+            trucks[truckPos].distanceCovered = distance;
+        }
+
+        cout << "Do you want to change the quantity of the fuel used (Y or N): ";
+        cin >> answer2;
+
+        if (answer2 == 'y' || answer2 == 'Y')
+        {
+            cout << "Enter the new quantity of fuel used: ";
+            cin >> fuel;
+
+            trucks[truckPos].fuelConsumed = fuel;
+        }
+    }else{
+
+        cout << "Invalid truck number." << endl;
+    }
+}
+
+void saveTruckInfo(TruckInfo trucks[], int numTrucks)
+{
+    ofstream outFile("ExellentRating.txt", ios :: out);
+
+    for (int i = 0; i < numTrucks; i++)
+    {
+        if (trucks[i].fuelConsumed <= 20 && trucks[i].distanceCovered >= 100)
+        {
+            outFile << trucks[i].driverName << "#" << trucks[i].truckNumber << endl;
+        }
+    }
+
+    outFile.close();
+
+    cout << "Information susccesfully saved to the file: " << endl;
+
+}
+
+
+
