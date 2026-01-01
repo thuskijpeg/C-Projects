@@ -1,80 +1,76 @@
 #include <iostream>
-#include <string>
-#include <cctype>
 
 using namespace std;
 
-void displayArr(string arrNames[], int counter)
+
+
+void inputData(int *pValues, int *pCounter)
 {
-    cout << "====Names of email addresses=====" << endl;
+    for (int k = 0; k < *pCounter; k++)
+    {
+        cout << "Enter Value: ";
+        cin >> *(pValues + k);
+    }
 
-    for (int i = 0; i < counter; i++){
+}
 
-        cout << i + 1 << ". " << arrNames[i] << endl;
+void displayData(int *pValues, int *pCounter)
+{
+    cout << "Content of the array" << endl;
+
+    for (int k = 0; k < *pCounter; k++)
+    {
+        cout << *(pValues + k) << " ";
     }
 }
 
 
+int findValue(int *pValues, int *pCounter, int *pValue)
+{
+    int count = 0;
+    int *pCount = &count;
+
+    for (int i = 0; i < *pCounter; i++)
+    {
+        if (*(pValues + i) == *pValue)
+        {
+            (*pCount)++;
+        }
+
+    }
+
+    return *pCount;
+
+}
 
 int main()
 {
-    string email;
-    const int MAX_SIZE = 10;
-    string arrNames[MAX_SIZE];
-    char answer;
-    int counter = 0;
-    string name;
-    string surname;
-    string nameAndSurname;
+    int values[10];
+    int *pValues = values;
 
-    do
-    {
-        cout << "Enter an email address: ";
-        getline(cin, email);
+    int counter = 10;
+    int *pCounter = &counter;
 
-        int atPos = email.find('@');
-        int dotPos = email.find('.');
+    int value;
+    int *pValue = &value;
 
-        if (atPos != string::npos)
-        {
-            cout << "@ characrer found" << endl;
+    int times;
+    int *pTimes = &times;
 
-        }else{
-            cout << "@ character not found" << endl;
+    inputData(values, &counter);
+    displayData(values, &counter);
 
-        }
+    cout << endl;
 
-        if (dotPos != string::npos)
-        {
-            cout << "Dot characrer found" << endl;
+    cout << "Enter a value: ";
+    cin >> *pValue;
 
-        }else{
-            cout << "Dot character not found" << endl;
+    cout << endl;
 
-        }
+    *pTimes = findValue(values, &counter, &value);
 
-        cout << endl;
-
-        name = email.substr(0, dotPos);
-        surname = email.substr(dotPos + 1, atPos - dotPos - 1);
-
-        nameAndSurname = name + " " + surname;
-
-        arrNames[counter] = nameAndSurname;
-        counter++;
-
-        cout << endl;
-        cout << "Do you want to continue? (Y/N): ";
-        cin >> answer;
-        cin.ignore();
-        cout << endl;
-
-
-    }while(answer != 'n' && answer != 'N' && counter < MAX_SIZE);
-
-    displayArr(arrNames, counter);
+    cout << "The value of " << *pValue << " occurs " << *pTimes << " in the array." << endl;
 
     return 0;
-
 
 }
