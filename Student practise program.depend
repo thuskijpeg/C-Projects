@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1760788099 source:c:\users\thusa\onedrive\desktop\student practise program\main.cpp
+	<iostream>
+	<fstream>
+	<string>
+
