@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1760775431 source:c:\users\thusa\onedrive\desktop\rainfall program\main.cpp
+	<iostream>
+	<random>
+	<fstream>
+	<string>
+
